@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Send Money — Simulated (with Name Enquiry)</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="phone">
+
+  <!-- SCREEN 1: enter number -->
+  <section class="screen" id="screen1">
+    <header class="topbar">
+      <button class="back" aria-label="Back">&#8592;</button>
+      <h1>Send Money</h1>
+    </header>
+
+    <div class="field">
+      <label for="fullName">Full name</label>
+      <input type="text" id="fullName" placeholder=" " autocomplete="off" />
+    </div>
+
+    <div class="field number-field">
+      <label>Mobile number</label>
+      <div class="number-row">
+        <div class="flag-select">
+          <span class="flag" aria-hidden="true"><i class="bar orange"></i><i class="bar white"></i><i class="bar green"></i></span>
+          <span class="code">+225</span>
+          <span class="chevron">&#9662;</span>
+        </div>
+        <input type="tel" id="mobileNumber" placeholder="0X XX XX XX XX" autocomplete="off" inputmode="numeric" />
+      </div>
+    </div>
+
+    <div class="lookup-status" id="lookupStatus" aria-live="polite"></div>
+
+    <div class="spacer"></div>
+
+    <button class="cta" id="nextBtn" disabled>Next</button>
+  </section>
+
+  <!-- SCREEN 2: amount -->
+  <section class="screen hidden" id="screen2">
+    <header class="topbar">
+      <button class="back" id="backToScreen1" aria-label="Back">&#8592;</button>
+      <h1>Send Money</h1>
+    </header>
+
+    <div class="to-block">
+      <p class="to-label">To</p>
+      <p class="to-name" id="toName">j j</p>
+      <p class="to-number" id="toNumber">+225 00 00 00 00 00</p>
+      <div class="verify-badge" id="verifyBadge"></div>
+    </div>
+
+    <div class="field">
+      <label for="sendAmount">Send Amount</label>
+      <input type="number" id="sendAmount" placeholder="" autocomplete="off" />
+    </div>
+
+    <div class="field receive-field">
+      <label for="receiveAmount">Receive Amount</label>
+      <input type="number" id="receiveAmount" autocomplete="off" />
+    </div>
+
+    <p class="fee-note">Wave's fee = 1%</p>
+
+    <div class="spacer"></div>
+
+    <button class="cta" id="sendBtn">Send</button>
+  </section>
+
+  <div class="mode-tag">Simulated with Name Enquiry lookup</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
