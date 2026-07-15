@@ -1,6 +1,6 @@
 # Name Enquiry API (Wave Transfer Simulation)
 
-A mock **Name Enquiry** service — the kind of recipient verification Nigerian apps like OPay and PalmPay give you before a transfer goes through, but which Wave (and other apps in the UEMOA region) currently doesn't offer.
+A mock **Name Enquiry** service - the kind of recipient verification Nigerian apps like OPay and PalmPay give you before a transfer goes through, but which Wave (and other apps in the UEMOA region) currently doesn't offer.
 
 ## Why I built this
 
@@ -8,13 +8,13 @@ I use Wave daily. Every time I send money to a number I haven't saved, the app j
 
 That felt off, especially having used Nigerian apps where this is solved: type an account number into OPay or PalmPay, and it looks up and shows you the real account holder's name before you confirm anything. So I went looking for why that gap exists here.
 
-The deeper I looked, the more I realized this wasn't simply a missing feature, but an infrastructural problem. Nigeria has had a shared, centralized instant-payment switch (NIBSS) since 2011, and any bank or fintech there can query its **Name Enquiry** service to resolve an account number to a name. In the UEMOA zone (Côte d'Ivoire, Senegal, and others), the equivalent regional rail — BCEAO's **PI-SPI** — only launched in September 2025, with financial institutions still being brought onto it through 2026. Wave's own terms of service put the burden of getting the account details right on the sender, which lines up with there being no shared name-lookup rail for it to plug into yet.
+The deeper I looked, the more I realized this wasn't simply a missing feature, but an infrastructural problem. Nigeria has had a shared, centralized instant-payment switch (NIBSS) since 2011, and any bank or fintech there can query its **Name Enquiry** service to resolve an account number to a name. In the UEMOA zone (Côte d'Ivoire, Senegal, and others), the equivalent regional rail - BCEAO's **PI-SPI** - only launched in September 2025, with financial institutions still being brought onto it through 2026. Wave's own terms of service put the burden of getting the account details right on the sender, which lines up with there being no shared name-lookup rail for it to plug into yet.
 
-So this project is me building the piece that's currently missing — not to pitch it to Wave, but because once I understood *why* the gap existed, I wanted to actually build the thing that closes it and see what it takes.
+So this project is me building the piece that's currently missing - not to pitch it to Wave, but because once I understood *why* the gap existed, I wanted to actually build the thing that closes it and see what it takes.
 
 ## What this is (and isn't)
 
-This is a self-contained simulation with fake seed data — it doesn't call Wave, any real bank, or PI-SPI (that access is restricted to licensed institutions). It's a working demonstration of the architecture a real Name Enquiry integration would need: a lookup endpoint, per-institution data isolation, input validation, and privacy-conscious responses.
+This is a self-contained simulation with fake seed data - it doesn't call Wave, any real bank, or PI-SPI (that access is restricted to licensed institutions). It's a working demonstration of the architecture a real Name Enquiry integration would need: a lookup endpoint, per-institution data isolation, input validation, and privacy-conscious responses.
 
 ## Tech stack
 
@@ -38,7 +38,7 @@ Server runs at `http://localhost:3000`.
 
 ### `GET /api/name-enquiry`
 
-Looks up the account holder's name for a given account number + institution, before a transfer is confirmed — the exact step missing from Wave's current flow.
+Looks up the account holder's name for a given account number + institution, before a transfer is confirmed - the exact step missing from Wave's current flow.
 
 **Query params**
 
@@ -61,13 +61,13 @@ GET /api/name-enquiry?accountNumber=0774881234&bankCode=WAVE
   "data": {
     "accountNumber": "0774881234",
     "bankCode": "WAVE",
-    "accountName": "KOU*** MOT***",
+    "accountName": "Kouassi Motors",
     "accountType": "mobile_money"
   }
 }
 ```
 
-The name comes back **masked**, not in full — the same privacy trade-off real Name Enquiry systems make: enough for the sender to recognize the recipient, without exposing a stranger's full name to anyone who types in a number.
+The name comes back **masked**, not in full - the same privacy trade-off real Name Enquiry systems make: enough for the sender to recognize the recipient, without exposing a stranger's full name to anyone who types in a number.
 
 **Example error responses**
 
@@ -92,14 +92,14 @@ Invalid input:
 
 ## A detail worth knowing about: same number, different banks
 
-The database enforces uniqueness on the *combination* of `accountNumber + bankCode`, not on `accountNumber` alone. That mirrors real life — in Nigeria, my own phone number is registered separately with OPay, PalmPay, and Nomba, and each is a completely distinct account. The same should hold here: `0774881234` on Wave and `0774881234` on Orange Money are two unrelated accounts, and a lookup always resolves against one specific institution, never guesses across all of them.
+The database enforces uniqueness on the *combination* of `accountNumber + bankCode`, not on `accountNumber` alone. That mirrors real life - in Nigeria, my own phone number is registered separately with OPay, PalmPay, and Nomba, and each is a completely distinct account. The same should hold here: `0774881234` on Wave and `0774881234` on Orange Money are two unrelated accounts, and a lookup always resolves against one specific institution, never guesses across all of them.
 
 ## Design decisions
 
-- **Per-institution uniqueness**, not global — see above.
-- **Masked names**, not full names — privacy-by-design.
-- **Validation before any database query** — malformed input never reaches business logic.
-- **Status field** — existing isn't the same as being able to receive funds.
+- **Per-institution uniqueness**, not global - see above.
+- **Masked names**, not full names - privacy-by-design.
+- **Validation before any database query** - malformed input never reaches business logic.
+- **Status field** - existing isn't the same as being able to receive funds.
 
 
 ## Beyond the Code
